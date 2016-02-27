@@ -1,5 +1,6 @@
 var jsonfile = require('jsonfile');
 var bodyParser = require('body-parser');
+var log=require('debug-logger')('hacktheplanet');
 var fs = require('fs');
 var http = require('http');
 var express = require('express');
@@ -7,7 +8,6 @@ var port = process.env.PORT || 3000;
 var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key', 'utf8');
 console.log(CAPITALONE_KEY);
 var server = express();
-var client = new require('node-rest-client').Client();
 
 server.use(express.static('public'));
 server.use(bodyParser.json());
@@ -31,10 +31,26 @@ function storeConfig(req, res) {
   res.status(200).end();
 }
 
-function captitalOneAccountlastUpdate(id){
+var Client = require('node-rest-client').Client;
+var client = new Client();
+// Capital One Client
+var c1UriBase = 'http://api.reimaginebanking.com';
+var c1ApiKeyParam = '?key=' + CAPITALONE_KEY;
 
+function c1CustLastUpdate(customerId){
 }
-client.registerMethod("getCustAccounts", uriBase + '/customers/${id}/accounts', 'GET');
+function c1GetCustAccountNumbers(customerId){
+  var numbers = [];
+  client.methods.c1GetCustAccounts({}, /*callback*/ function(data, resp) {
+    data.forEach(function(c){ numbers.push(c._id); });
+  });
+}
+client.registerMethod('c1GetCustAccounts', c1UriBase + '/customers/${id}/accounts' + c1ApiKeyParam, 'GET');
+client.registerMethod('c1GetMerchant', c1UriBase + '/merchants/${id}' + c1ApiKeyParam, 'GET');
+function c1GetCustPurchases(customerId){
+  var accounts = c1GetCustAccountNumbers(customerId);
+  }
+client.registerMethod('c1GetAccountPurchases', c1UriBase + '/accounts/${id}' + c1ApiKeyParam, 'GET');
 
 
 http.createServer(server).listen(port);
