@@ -4,6 +4,7 @@
     "cookie-parser": "latest",
     "express": "latest",
     "express-session": "latest",
+    "grunt": "^0.4.5",
     "passport": "latest",
     "passport-nest": "latest"
   }
