@@ -4,7 +4,26 @@
     <meta charset="utf-8">
     <title>Ayy</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript">
+
+    function openDisabledThing() {
+
+    if (($("#check:checked").length) > 0) {
+        $("#rate").removeAttr("disabled");
+        $("#duration").removeAttr("disabled");
+    } else {
+        $("#rate").attr("disabled", "disabled");
+        $("#duration").attr("disabled", "disabled");
+
+
+    }
+    }
+
+
+
+
       // $('#').focusout(function(){
       function postStuff() {
         console.log("inside function");
@@ -15,11 +34,33 @@
         var hUID = $('#hApi').val();
         var hApi = $('#hUID').val();
 
+        //determine if booleans are true
+          var isATMChecked = {enabled: $('#avoidATMFees').prop('checked')}
+          var isBillsChecked = {enabled: $('#avoidATMFees').prop('checked')}
+          var isEatMoreAtHome = {enabled: $('#eatMoreAtHome').prop('checked')}
+          var isLiquorStoreChecked = {enabled: $('#liquorStore').prop('checked')};
+
+
+          if($('#check').prop('checked')){
+
+            var spendSave = {enabled: $('#check').prop('checked'), rate: $("#rate option:selected").val(), rate: $("#duration option:selected").val() }
+
+          }
+          else{
+              var spendSave = {enabled: $('#check').prop('checked')}
+          }
+
+
         var body = {
           'cApiKey':cApi,
           'cAccID':cAccID,
           'uid': hUID,
           'hApiKey':hApi,
+          'ATMFees': isATMChecked,
+          'EatAtHome': isEatMoreAtHome,
+          'Bills': isBillsChecked,
+          'Liquor': isLiquorStoreChecked,
+          'SpendSave': spendSave
         };
 
         console.log(JSON.stringify(body));
@@ -38,6 +79,7 @@
           });
         console.log("end of func");
       }
+
 
       </script>
 
@@ -60,7 +102,70 @@
             <input class="form-control" type="text" name="HabitcaAPIKey" id=hApi placeholder="Enter Habitca API Key" /> <br> <br>
             <input class="form-control" type="text" name="HabitcaUID" id=hUID placeholder="Enter Habitca UID" /> <br> <br>
             <br>
-                <button class="btn btn-primary btn-sm pull-right" type="submit" name="submit" onclick="postStuff()"> <br>
+
+            <form class = "form-inline" role = "form">
+
+              <div class = "checkbox">
+                 <label><input type = "checkbox" id="avoidATMFees"> Avoid ATM Fees</label>
+              </div>
+
+              <div class = "checkbox">
+                 <label><input type = "checkbox" id ="billsOnTime"> Keep track of bills on time</label>
+              </div>
+
+              <div class = "checkbox">
+                 <label><input type = "checkbox" id="eatMoreAtHome"> Eat out less, and more at home</label>
+              </div>
+
+              <div class = "checkbox">
+                 <label><input type = "checkbox" id="liquorStore"> Buy liquior at grocery store, instead of bars </label>
+              </div>
+
+                  <tr>
+                      <td colspan="2" align="center">
+                          <input name="check" type="checkbox" id="check" value="Employee " onclick="openDisabledThing()" /> Save</td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <select name="type" id="rate" disabled="disabled">
+                              <option value="5">5%</option>
+                              <option value="10">10%</option>
+                              <option value="15">15%</option>
+                              <option value="20">20%</option>
+                              <option value="25">25%</option>
+                              <option value="30">30%</option>
+                              <option value="35">35%</option>
+                              <option value="40">40%</option>
+                              <option value="45">45%</option>
+                              <option value="50">50%</option>
+                              <option value="55">55%</option>
+                              <option value="60">60%</option>
+                              <option value="65">65%</option>
+                              <option value="70">70%</option>
+                              <option value="75">75%</option>
+                              <option value="80">80%</option>
+                              <option value="85">85%</option>
+                              <option value="90">90%</option>
+                              <option value="95">95%</option>
+                          </select>
+                      </td>
+                  </tr>
+                  <tr>
+
+                      <td>
+                          <select name="type" id="duration" disabled="disabled">
+                              <option value="Daily">Daily</option>
+                              <option value="Monthly">Monthly</option>
+                              <option value="Yearly">Yearly</option>
+                          </select>
+                      </td>
+                  </tr>
+
+
+
+
+
+                <button class="btn btn-primary btn-sm pull-right" type="submit" name="submit" onclick="postStuff()">
                   Authorize
                 </button>
     </div>
