@@ -1,6 +1,8 @@
+var log=require('debug-logger')('hacktheplanet');
+
 var fs = require('fs');
 var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key', 'utf8');
-console.log(CAPITALONE_KEY);
+log.debug('capital one api key: ' + CAPITALONE_KEY);
 
 var express = require('express');
 var server = express();
@@ -9,7 +11,6 @@ server.use(express.static('public'));
 var bodyParser = require('body-parser');
 server.use(bodyParser.json());
 
-var log=require('debug-logger')('hacktheplanet');
 var jsonfile = require('jsonfile');
 
 server.get('/config/:uid', getConfig);
@@ -22,10 +23,10 @@ function getConfig(req, res) {
 }
 function storeConfig(req, res) {
   try {
-    console.log(req.body);
+    log.trace('store body: ' + req.body);
     jsonfile.writeFileSync(req.body.uid+'.json', req.body);
   } catch (e) {
-    console.log(e);
+    log.error('store failed: ' + e);
     res.status(500).end();
   }
   res.status(200).end();
@@ -57,4 +58,4 @@ var port = process.env.PORT || 3000;
 var http = require('http');
 http.createServer(server).listen(port);
 
-console.log("Listening on port: " + port);
+log.info("Listening on port: " + port);
