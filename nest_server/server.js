@@ -23,6 +23,9 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     NestStrategy = require('passport-nest').Strategy;
 
+var tempControl = require('./control.js');
+tempControl.test();
+
 /**
   Setup Passport to use the NestStrategy,
   simply pass in the clientID and clientSecret.
