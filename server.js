@@ -12,7 +12,7 @@ server.use(express.static('public'));
 server.use(bodyParser.json());
 
 server.get('/config/:uid', getConfig);
-server.put('/config', storeConfig);
+server.put('/config/:uid', storeConfig);
 
 function getConfig(req, res) {
   var config = fs.readFileSync(req.params.uid+'.json', 'utf8');
@@ -20,6 +20,8 @@ function getConfig(req, res) {
   res.json(config);
 }
 function storeConfig(req, res) {
+  console.log("hi")
+   console.log(req.body.uid);
   try {
     console.log(req.body);
     jsonfile.writeFileSync(req.body.uid+'.json', req.body);
