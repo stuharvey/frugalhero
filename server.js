@@ -1,6 +1,7 @@
 
 var fs = require('fs');
 var request = require('superagent');
+var http = require('http');
 
 var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key');
 
@@ -11,3 +12,9 @@ request
     console.log(err);
     console.log(res.body); //do something
 });
+
+var port = process.env.PORT || 1337;
+http.createServer(function(req, res) {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello World\n');
+}).listen(port);
