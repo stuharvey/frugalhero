@@ -1,10 +1,10 @@
 {
   "node": true,
   "browser": true,
-  "es5": true,
+  "esversion": 6,
   "esnext": true,
   "bitwise": true,
-  "camelcase": false, // Not converting JSON in this sample
+  "camelcase": false,
   "curly": true,
   "eqeqeq": true,
   "immed": true,
