@@ -10,7 +10,7 @@ var server = express();
 server.use(express.static('public'));
 
 server.get('/config/:uid', getConfig);
-server.put('/config/:uid', storeConfig);
+server.put('/config', storeConfig);
 
 function getConfig(req, res) {
 }
