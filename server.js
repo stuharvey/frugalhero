@@ -1,51 +1,34 @@
+var jsonfile = require('jsonfile');
+var bodyParser = require('body-parser');
 var fs = require('fs');
-var request = require('superagent');
 var http = require('http');
 var express = require('express');
-var path = require('path');
 var port = process.env.PORT || 3000;
-var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key');
+var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key', 'utf8');
+console.log(CAPITALONE_KEY);
 var server = express();
 
-server.get('/', get);
+server.use(express.static('public'));
+server.use(bodyParser.json());
 
-server.use(express.static(path.join(__dirname, 'public')));
+server.get('/config/:uid', getConfig);
+server.put('/config', storeConfig);
 
-/**
- * Handle / gets
- * @param  {Object} req Get request
- * @param  {Object} res Response to send
- */
-function get(req, res) {
-  // request
-  //   .get('http://api.reimaginebanking.com/atms?key=' + CAPITALONE_KEY)
-  //   .end(function(err, c1Response) {
-  //     // console.log(res.status);
-  //     console.log(c1Response.body); // Write capital one's response to console
-  //     res.end(JSON.stringify(c1Response.body));
-  // });
-  res.sendFile(__dirname + "/index.html");
+function getConfig(req, res) {
+  var config = fs.readFileSync(req.params.uid+'.json', 'utf8');
+  if (config === null) res.status(404).end();
+  res.json(config);
 }
-
-server.get('/*' , function( req, res, next) {
-    //This is the current file they have requested
-    var file = req.params[0];
-    if(file.indexOf("server") > -1) {
-        res.end("404 you idiot");
-    }
-    else {
-        fs.exists(__dirname + '/' + file, function(exists) {
-            if (exists) {
-                res.sendFile( __dirname + '/' + file );
-            }
-            else {
-                //Send the requesting client the file.
-                res.end("404 you idiot");
-            }
-        });
-    }
-});
-
+function storeConfig(req, res) {
+  try {
+    console.log(req.body);
+    jsonfile.writeFileSync(req.body.uid+'.json', req.body);
+  } catch (e) {
+    console.log(e);
+    res.status(500).end();
+  }
+  res.status(200).end();
+}
 
 http.createServer(server).listen(port);
 
