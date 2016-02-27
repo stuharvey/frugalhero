@@ -1,8 +1,6 @@
 var fs = require('fs');
-var request = require('superagent');
 var http = require('http');
 var express = require('express');
-var path = require('path');
 var port = process.env.PORT || 3000;
 var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key');
 var server = express();
