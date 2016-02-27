@@ -25,6 +25,15 @@ function get(req, res) {
   });
 }
 
+server.get('/config/:uid', getConfig);
+server.put('/config/:uid', storeConfig);
+
+function getConfig(req, res) {
+}
+function storeConfig(req, res) {
+}
+
 http.createServer(server).listen(port);
+app.use(express.static('public'));
 
 console.log("Listening on port: " + port);
