@@ -1,8 +1,13 @@
 
-var fs = require('fs')
+var fs = require('fs');
 var request = require('superagent');
 
-request.get('http://api.reimaginebanking.com/atms?key=your_key').end(function(res){
-    foo(res.status);
-    bar(res.body); //do something
+var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key');
+
+request
+  .get('http://api.reimaginebanking.com/atms?key=' + CAPITALONE_KEY)
+  .end(function(err, res) {
+    // console.log(res.status);
+    console.log(err);
+    console.log(res.body); //do something
 });
