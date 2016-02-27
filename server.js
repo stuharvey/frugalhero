@@ -1,3 +1,5 @@
+var log=require('debug-logger')('hacktheplanet');
+
 var fs = require('fs');
 var path = require('path');
 var passport = require('passport');
@@ -6,7 +8,7 @@ var session = require('express-session');
 var EventSource = require('eventsource');
 var openurl = require('openurl');
 var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key', 'utf8');
-console.log(CAPITALONE_KEY);
+log.debug('capital one api key: ' + CAPITALONE_KEY);
 
 // Don't use this in production
 // This secret is used to sign session ID cookies.
@@ -50,7 +52,6 @@ server.use(passport.initialize());
 server.use(passport.session());
 
 
-var log=require('debug-logger')('hacktheplanet');
 var jsonfile = require('jsonfile');
 
 server.get('/config/:uid', getConfig);
@@ -68,16 +69,17 @@ var tempControl = require('./control.js');
  * Upon return from the Nest OAuth endpoint, grab the user's
  * accessToken and start streaming the events.
  */
-server.get('/auth/nest/callback', passport.authenticate('nest', passportOptions),
+server.get('/auth/nest/callback', passport.authenticate('nest',
+  passportOptions),
   function(req, res) {
     var token = req.user.accessToken;
 
     if (token) {
-      console.log('Success! Token acquired: ' + token);
+      log.info('Success! Token acquired: ' + token);
       res.send('Success! You may now close this browser window.');
       tempControl.start(token);
     } else {
-      console.log('An error occurred! No token acquired.');
+      log.error('An error occurred! No token acquired.');
       res.send('An error occurred. Please try again.');
     }
 });
@@ -98,10 +100,10 @@ function getConfig(req, res) {
 }
 function storeConfig(req, res) {
   try {
-    console.log(req.body);
+    log.trace('store body: ' + req.body);
     jsonfile.writeFileSync(req.body.uid+'.json', req.body);
   } catch (e) {
-    console.log(e);
+    log.error('store failed: ' + e);
     res.status(500).end();
   }
   res.status(200).end();
@@ -133,12 +135,9 @@ var port = process.env.PORT || 3000;
 var http = require('http');
 http.createServer(server).listen(port);
 
-function readArgs(args) {
-  if (args.indexOf('nest') !== -1) {
-    openurl.open('http://localhost:' + port + '/auth/nest');
-    console.log('Please click Accept in the browser window that just opened.');
-  }
+if (process.env.RUN_WITH_NEST) {
+  openurl.open('http://localhost:' + port + '/auth/nest');
+  log.info('Please click Accept in the browser window that just opened.');
 }
-readArgs(process.argv.slice(2));
 
-console.log("Listening on port: " + port);
+log.info("Listening on port: " + port);
