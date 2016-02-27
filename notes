@@ -1,0 +1,25 @@
+todo:
+functions to access c1 api
+  track last transaction_date, poll for newer
+  get deposit/withdrawal>1 == credit for saving
+  bill date, ammount
+  withdrawal/account type over limit
+  purchase category - grocery vs restaurant
+
+functions to access habitica api
+  task create/update
+    daily for bill
+    habit for atm fee
+    habit for checking withdrawal limit
+    habit for grocery vs restauratn
+    daily for paycheck save/spend
+
+
+setup data
+  paycheck frequency/amount
+  habitica api key, uid
+  cap1 api key
+
+seed d/w triggers -
+account
+56c66be6a73e492741507dc4
