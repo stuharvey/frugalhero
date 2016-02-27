@@ -1,16 +1,16 @@
-var jsonfile = require('jsonfile');
-var bodyParser = require('body-parser');
-var log=require('debug-logger')('hacktheplanet');
 var fs = require('fs');
-var http = require('http');
-var express = require('express');
-var port = process.env.PORT || 3000;
 var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key', 'utf8');
 console.log(CAPITALONE_KEY);
+
+var express = require('express');
 var server = express();
 
 server.use(express.static('public'));
+var bodyParser = require('body-parser');
 server.use(bodyParser.json());
+
+var log=require('debug-logger')('hacktheplanet');
+var jsonfile = require('jsonfile');
 
 server.get('/config/:uid', getConfig);
 server.put('/config', storeConfig);
@@ -53,6 +53,8 @@ function c1GetCustPurchases(customerId){
 client.registerMethod('c1GetAccountPurchases', c1UriBase + '/accounts/${id}' + c1ApiKeyParam, 'GET');
 
 
+var port = process.env.PORT || 3000;
+var http = require('http');
 http.createServer(server).listen(port);
 
 console.log("Listening on port: " + port);
