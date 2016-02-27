@@ -5,6 +5,7 @@
     "express": "latest",
     "express-session": "latest",
     "grunt": "^0.4.5",
+    "grunt-wiredep": "^2.0.0",
     "passport": "latest",
     "passport-nest": "latest"
   }
