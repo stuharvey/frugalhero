@@ -7,12 +7,13 @@ var port = process.env.PORT || 3000;
 var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key', 'utf8');
 console.log(CAPITALONE_KEY);
 var server = express();
+var client = new require('node-rest-client').Client();
 
 server.use(express.static('public'));
 server.use(bodyParser.json());
 
 server.get('/config/:uid', getConfig);
-server.put('/config/:uid', storeConfig);
+server.put('/config', storeConfig);
 
 function getConfig(req, res) {
   var config = fs.readFileSync(req.params.uid+'.json', 'utf8');
@@ -20,8 +21,6 @@ function getConfig(req, res) {
   res.json(config);
 }
 function storeConfig(req, res) {
-  console.log("hi")
-   console.log(req.body.uid);
   try {
     console.log(req.body);
     jsonfile.writeFileSync(req.body.uid+'.json', req.body);
@@ -31,6 +30,12 @@ function storeConfig(req, res) {
   }
   res.status(200).end();
 }
+
+function captitalOneAccountlastUpdate(id){
+
+}
+client.registerMethod("getCustAccounts", uriBase + '/customers/${id}/accounts', 'GET');
+
 
 http.createServer(server).listen(port);
 
