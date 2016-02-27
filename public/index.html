@@ -3,6 +3,46 @@
   <head>
     <meta charset="utf-8">
     <title>Ayy</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      // $('#').focusout(function(){
+      function postStuff() {
+        console.log("inside function");
+
+
+        var cApi = $('#cApi').val();
+        var cAccID= $('#cAcc').val();
+        var hUID = $('#hApi').val();
+        var hApi = $('#hUID').val();
+
+        var body = {
+          'cApiKey':cApi,
+          'cAccID':cAccID,
+          'uid': hUID,
+          'hApiKey':hApi,
+        };
+
+        console.log(JSON.stringify(body));
+
+        $.ajax({
+              url: 'http://localhost:3000/config/' + hUID,
+              data: JSON.stringify(body),
+              contentType:"application/json; charset=utf-8",
+              type: 'PUT',
+              success: function(response) {
+                  console.log("hi");
+              },
+              error: function(error) {
+                  alert(error);
+              }
+          });
+        console.log("end of func");
+      }
+
+      </script>
+
+    </head>
+    <body>
     <div id="video-header">
       <video id="video1"
         loop="" autoplay="true">
@@ -11,8 +51,22 @@
         </source>
       </video>
     </div>
-  </head>
-  <body>
+
+
+    <div>
+
+            <input class="form-control" type="text" name="capitalOneAPI" id=cApi placeholder="Enter Captial One API Key" /> <br> <br>
+            <input class="form-control" type="text" name="capitalOneAccountID" id=cAcc placeholder="Enter Capital One Account ID" /> <br> <br>
+            <input class="form-control" type="text" name="HabitcaAPIKey" id=hApi placeholder="Enter Habitca API Key" /> <br> <br>
+            <input class="form-control" type="text" name="HabitcaUID" id=hUID placeholder="Enter Habitca UID" /> <br> <br>
+            <br>
+                <button class="btn btn-primary btn-sm pull-right" type="submit" name="submit" onclick="postStuff()"> <br>
+                  Authorize
+                </button>
+    </div>
+
+
+  </body>
 
   </body>
 </html>
