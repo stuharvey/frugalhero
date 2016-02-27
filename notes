@@ -14,11 +14,13 @@ functions to access habitica api
     habit for grocery vs restauratn
     daily for paycheck save/spend
 
-
 setup data
   paycheck frequency/amount
   habitica api key, uid
   cap1 api key
+
+config api
+  /config/uid get/put
 
 seed d/w triggers -
 account
