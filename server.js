@@ -45,6 +45,7 @@ function storeConfig(req, res) {
     jsonfile.writeFileSync(req.body.uid+'.json', req.body);
 
     if(req.body.loaded == 'no'){
+      log.debug("hi i'm in here")
       var apiuser = req.body.uid;
       var apikey = req.body.hApiKey;
 
@@ -53,55 +54,102 @@ function storeConfig(req, res) {
       var toPost = [];
       //ATMFees
       var atm = req.body.ATMFees;
-      var atmJSON = JSON.parse(atm);
+      log.debug(atm);
+      // var atmJSON = JSON.parse(atm);
 
-      if(atmJSON.enabled == true){
-        toPost.push({text: "ATM Fees", id: "atmFees", type: "habit", notes: "avoid ATM Fees"});
+      if(atm.enabled == true){
+        var text = ({text: "ATM Fees", id: "atmFees", type: "habit", notes: "avoid ATM Fees"});
+          var args = {
+            headers: {"x-api-user": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc", "Content-Type":"application/json"},
+            data: text
+          };
+          client.post(hUriBase + "/user/tasks/", args, function (data, response) {
+            log.debug(data);
+            log.debug("now printing response")
+            log.debug(response.statusCode);
+
+          });
       }
 
-      // var EatAtHome = req.body.EatAtHome;
-      // var eatJSON = JSON.parse(EatAtHome);
-      //
-      // if(eatJSON.enabled == true){
-      //   toPost.push({text: "Eat out less", id: "eatAtHome", type: "habit", notes: "Spend less money by eating at home instead of going out"});
-      // }
-      //
-      // var bills = req.body.Bills;
-      // var billJSON = JSON.parse(bills);
-      //
-      // if(billJSON.enabled == true){
-      //   toPost.push({text: "Pay bills on time", id: "bills", type: "daily",  "frequency": "monthly", notes: "Pay your bills on your time"});
-      // }
-      //
-      // var liquor = req.body.Liquor;
-      // var liquorJSON = JSON.parse(liquor);
-      //
-      // if(liquorJSON.enabled == true){
-      //   toPost.push({text: "Buy your alcohol at the grocery store", id: "liquor", type: "habit", notes: "Don't always go out to bars"});
-      // }
-      //
+      var EatAtHome = req.body.EatAtHome;
+
+      if(EatAtHome.enabled == true){
+        var text = ({text: "Eat out less", id: "eatAtHome", type: "habit", notes: "Spend less money by eating at home instead of going out"});
+
+        var args = {
+          headers: {"x-api-user": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc", "Content-Type":"application/json"},
+          data: text
+        };
+        client.post(hUriBase + "/user/tasks/", args, function (data, response) {
+          log.debug(data);
+          log.debug("now printing response")
+          log.debug(response.statusCode);
+
+        });
+    }
+      }
+
+      var bills = req.body.Bills;
+      log.debug(bills);
+
+      if(bills.enabled == false){
+        var text = ({text: "Pay bills on time", id: "bills", type: "daily"});
+        var args = {
+          headers: {"x-api-user": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc", "Content-Type":"application/json"},
+          data: text
+        };
+        client.post(hUriBase + "/user/tasks/", args, function (data, response) {
+          log.debug(data);
+          log.debug("now printing response")
+          log.debug(response.statusCode);
+
+        });
+    }
+
+      }
+
+      var liquor = req.body.Liquor;
+
+      if(liquor.enabled == true){
+        var text = ({text: "Buy your alcohol at the grocery store", id: "liquor", type: "habit", notes: "Don't always go out to bars"});
+
+        var args = {
+          headers: {"x-api-user": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc", "Content-Type":"application/json"},
+          data: text
+        };
+        client.post(hUriBase + "/user/tasks/", args, function (data, response) {
+          log.debug(data);
+          log.debug("now printing response")
+          log.debug(response.statusCode);
+
+        });
+    }
+
+
       // var spendSave = req.body.spendSave;
-      // var spendSaveJSON = JSON.parse(spendSave);
       //
-      // if(spendSaveJSON.enabled == true){
+      // if(spendSave.enabled == true){
       //
       //   var rate = spendSave.rate;
       //
       //   toPost.push({text: "Buy your alcohol at the grocery store", type: "daily",  "frequency": "weekly", id: "spendSave", notes: "Spend" + rate + "% of your money"});
       // }
 
-      for (var i = 0; i < toPost.length; i++) {
-        var args = {
-          headers: {"x-api-key": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc", "Content-Type":"application/json"},
-          data: toPost[i]
-        };
-        client.post(hUriBase + "/user/tasks/", args, function (data, response) {
-          log.debug(data);
-          log.debug("now printing response")
-          log.debug(response);
-
-        });
-      }
+      // log.debug(" outhere");
+      // log.debug(bills.enabled);
+      // for (var i = 0; i < toPost.length; i++) {
+      //   log.debug("here");
+      //   var args = {
+      //     headers: {"x-api-user": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc", "Content-Type":"application/json"},
+      //     data: toPost[i]
+      //   };
+      //   client.post(hUriBase + "/user/tasks/", args, function (data, response) {
+      //     log.debug(data);
+      //     log.debug("now printing response")
+      //     log.debug(response.statusCode);
+      //
+      //   });
+      // }
 
     }
 
