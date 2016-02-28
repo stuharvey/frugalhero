@@ -1,4 +1,3 @@
-"use strict";
 var log=require('debug-logger')('hacktheplanet');
 
 var fs = require('fs');
