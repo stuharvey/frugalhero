@@ -1,0 +1,155 @@
+html
+{
+    background-color: #F8FFF4;
+}
+
+.nav
+{
+    background-color: #474350;
+    height: 10em;
+}
+
+h1
+{
+    color: #F8FFF4;
+    font-size: 20px;
+    text-align: center;
+    width: 60%;
+    padding-left: 20%;
+    padding-top: 2%;
+    
+}
+    
+
+.row
+{
+    height: 25em;
+    width: 100%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    margin-bottom: 5%;
+}
+
+.red
+{
+    background-color: #FCFFEB;
+    height: 35em;
+    text-align: center;
+    color: #474350;
+}
+.hp
+{
+    padding-top: 3%;
+}
+.health-bar
+{
+    width: 50%;
+    background-color: #FECDAA;
+    margin-left: auto;
+    margin-right: auto;
+    height: 8px;
+    z-index: 1;
+}
+.health-bar-value
+{
+    height: 8px;
+    float: left;
+    background-color: red;
+    width: 10%;
+    z-index: 2;
+}
+.xp
+{
+    padding-top: 1%;
+}
+.xp-bar
+{
+    width: 50%;
+    background-color: #FAFAC6;
+    margin-left: auto;
+    margin-right: auto;
+    height: 8px;
+    z-index: 1;
+}
+.xp-bar-value
+{
+    height: 8px;
+    float: left;
+    background-color: orange;
+    width: 10%;
+    z-index: 2;
+}
+.status
+{
+    padding-top: 3%;
+}
+
+.blue
+{
+    background-color: #FECDAA;
+    height: 35em;
+    text-align: center;
+    color: #474350;
+
+}
+.skills
+{
+    white-space: normal;
+}
+
+.yellow
+{
+    background-color: #FAFAC6;
+    height: 35em;
+    text-align: center;
+    color: #474350;
+}
+
+::-webkit-input-placeholder {
+   text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;
+}
+
+:-ms-input-placeholder {  
+   text-align: center;
+}
+
+input
+{
+    background-color: #F8FFF4;
+    border-radius: 8px;
+    margin-bottom: 15%;
+    outline: none;
+}
+button
+{
+    text-align: center;
+    margin-bottom: 15%;
+}
+button.active {
+background: #474350;
+color: #F8FFF4;
+}
+
+.bottom
+{
+    background-color: #474350;
+    height: 2em;
+    margin-bottom: 0;
+    clear: both;
+    padding-top: 5%;
+    margin-top: 5%;
+}
+
+.bottom p
+{
+    color: #F8FFF4;
+    text-align: center;
+}

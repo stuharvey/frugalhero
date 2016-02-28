@@ -2,17 +2,60 @@
   "name": "obscurehackathonproject",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "prestart": "eslint --fix server.js",
+    "start": "node server.js",
+    "dev-watch": "DEBUG=express:*,hacktheplanet:* nodemon -x npm start"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "debug-logger": "^0.4.1",
+    "eventsource": "^0.2.0",
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "habitica": "^1.1.0",
     "jsonfile": "^2.2.3",
-    "superagent": "^1.8.0-beta.1"
+    "node-rest-client": "^1.8.0",
+    "openurl": "^1.1.1",
+    "passport": "^0.3.2",
+    "passport-nest": "^1.0.0",
+    "superagent": "^1.8.0-beta.1",
+    "sync-request": "^3.0.0",
+    "unofficial-nest-api": "^0.1.4"
+  },
+  "devDependencies": {
+    "eslint": "^2.2.0",
+    "nodemon": "^1.9.1"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "rules": {
+      "complexity": [
+        2,
+        15
+      ],
+      "max-len": [
+        1,
+        80
+      ],
+      "no-trailing-spaces": 2,
+      "brace-style": 2,
+      "indent": [
+        2,
+        2
+      ],
+      "eol-last": 2,
+      "eqeqeq": 2,
+      "no-unused-vars": 0
+    },
+    "extends": "eslint:recommended"
+  },
+  "optionalDependencies": {
+    "http-sync-win": "0.0.7"
   }
 }

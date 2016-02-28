@@ -17,11 +17,13 @@ functions to access habitica api
 setup data
   paycheck frequency/amount
   habitica api key, uid
-  cap1 api key
+  cap1 api key - done
+  cap1 customer number
 
 config api
-  /config/uid get/put
+  /config/uid get/put - done
 
-seed d/w triggers -
+seed p/d/w triggers
+  make sure purchase are timestamped finely so sort can happen
 account
 56c66be6a73e492741507dc4
