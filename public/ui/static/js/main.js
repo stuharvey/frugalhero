@@ -1,6 +1,8 @@
 $.get('/status', function(user) {
+  console.log("Got some data from the server");
+  console.log(user);
   var goals = user.goals;
-  if (goals.indexOf('avoidFees') !== -1) {
+  if (goals.indexOf('avoidfees') !== -1) {
     if (!$("#atm-skill").hasClass('active') && !user.gotATMFee) {
       $("#atm-skill").addClass('active');
     }

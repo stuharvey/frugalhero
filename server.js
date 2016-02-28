@@ -49,7 +49,7 @@ function getConfig(req, res) {
 function storeConfig(req, res) {
   try {
     log.trace('store body: ' + req.body);
-    jsonfile.writeFileSync(req.body.uid+'.json', req.body);
+    // jsonfile.writeFileSync(req.body.uid+'.json', req.body);
   } catch (e) {
     log.error('store failed: ' + e);
     res.status(500).end();
@@ -94,7 +94,7 @@ function storeConfig(req, res) {
       type: "habit", notes: "Don't always go out to bars"});
     }
 
-    var spendSave = req.body.spendSave;
+    var spendSave = req.body.SpendSave;
 
     if(spendSave.enabled) {
       user.goals.push('spendsave');
