@@ -17,7 +17,20 @@ server.use(bodyParser.json());
 var jsonfile = require('jsonfile');
 
 server.get('/config/:uid', getConfig);
-server.put('/config', storeConfig);
+server.put('/config/', storeConfig);
+
+
+
+//Habitca One Client
+var hUriBase = 'https://habitica.com/api/v2';
+// var hApiKeyParam = '?key=' + CAPITALONE_KEY;
+
+// var args = {
+//     headers: { "x-api-user": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc",
+//     "Content-Type":"application/json" },
+//     data: {
+//     }
+// };
 
 
 function getConfig(req, res) {
@@ -26,9 +39,120 @@ function getConfig(req, res) {
   res.json(config);
 }
 function storeConfig(req, res) {
+
   try {
     log.trace('store body: ' + req.body);
     jsonfile.writeFileSync(req.body.uid+'.json', req.body);
+
+    if(req.body.loaded == 'no'){
+      log.debug("hi i'm in here")
+      var apiuser = req.body.uid;
+      var apikey = req.body.hApiKey;
+
+      var cAccountID = req.body.cAccID;
+
+      var toPost = [];
+      //ATMFees
+      var atm = req.body.ATMFees;
+      log.debug(atm);
+      // var atmJSON = JSON.parse(atm);
+
+      if(atm.enabled == true){
+        var text = ({text: "ATM Fees", id: "atmFees", type: "habit", notes: "avoid ATM Fees"});
+          var args = {
+            headers: {"x-api-user": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc", "Content-Type":"application/json"},
+            data: text
+          };
+          client.post(hUriBase + "/user/tasks/", args, function (data, response) {
+            log.debug(data);
+            log.debug("now printing response")
+            log.debug(response.statusCode);
+
+          });
+      }
+
+      var EatAtHome = req.body.EatAtHome;
+
+      if(EatAtHome.enabled == true){
+        var text = ({text: "Eat out less", id: "eatAtHome", type: "habit", notes: "Spend less money by eating at home instead of going out"});
+
+        var args = {
+          headers: {"x-api-user": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc", "Content-Type":"application/json"},
+          data: text
+        };
+        client.post(hUriBase + "/user/tasks/", args, function (data, response) {
+          log.debug(data);
+          log.debug("now printing response")
+          log.debug(response.statusCode);
+
+        });
+    }
+      }
+
+      var bills = req.body.Bills;
+      log.debug(bills);
+
+      if(bills.enabled == false){
+        var text = ({text: "Pay bills on time", id: "bills", type: "daily"});
+        var args = {
+          headers: {"x-api-user": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc", "Content-Type":"application/json"},
+          data: text
+        };
+        client.post(hUriBase + "/user/tasks/", args, function (data, response) {
+          log.debug(data);
+          log.debug("now printing response")
+          log.debug(response.statusCode);
+
+        });
+    }
+
+      }
+
+      var liquor = req.body.Liquor;
+
+      if(liquor.enabled == true){
+        var text = ({text: "Buy your alcohol at the grocery store", id: "liquor", type: "habit", notes: "Don't always go out to bars"});
+
+        var args = {
+          headers: {"x-api-user": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc", "Content-Type":"application/json"},
+          data: text
+        };
+        client.post(hUriBase + "/user/tasks/", args, function (data, response) {
+          log.debug(data);
+          log.debug("now printing response")
+          log.debug(response.statusCode);
+
+        });
+    }
+
+
+      // var spendSave = req.body.spendSave;
+      //
+      // if(spendSave.enabled == true){
+      //
+      //   var rate = spendSave.rate;
+      //
+      //   toPost.push({text: "Buy your alcohol at the grocery store", type: "daily",  "frequency": "weekly", id: "spendSave", notes: "Spend" + rate + "% of your money"});
+      // }
+
+      // log.debug(" outhere");
+      // log.debug(bills.enabled);
+      // for (var i = 0; i < toPost.length; i++) {
+      //   log.debug("here");
+      //   var args = {
+      //     headers: {"x-api-user": "12b4ded4-e395-487c-af66-26344864be9b", "x-api-key": "bf00bb1a-1c1f-4751-932b-7b32bc2075dc", "Content-Type":"application/json"},
+      //     data: toPost[i]
+      //   };
+      //   client.post(hUriBase + "/user/tasks/", args, function (data, response) {
+      //     log.debug(data);
+      //     log.debug("now printing response")
+      //     log.debug(response.statusCode);
+      //
+      //   });
+      // }
+
+    }
+
   } catch (e) {
     log.error('store failed: ' + e);
     res.status(500).end();
