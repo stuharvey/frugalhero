@@ -81,11 +81,12 @@ function storeConfig(req, res) {
       "% of your money"});
     }
 
-
     habitica.addTasks(toPost);
   }
   res.status(200).send();
 }
+
+
 
 // Capital One Client
 var c1UriBase = 'http://api.reimaginebanking.com';
@@ -119,22 +120,6 @@ function c1GetCustPurchases(customerId){
   });
   return purchases;
 }
-
-// //Habitica One Client
-// var hUriBase = 'https://habitica.com/api/v2';
-//
-// var args = {
-//     data: { x-api-user: "12b4ded4-e395-487c-af66-26344864be9b" ,
-//     x-api-key: "bf00bb1a-1c1f-4751-932b-7b32bc2075dc" },
-//     headers: { "Content-Type": "application/json" }
-// };
-//
-// client.post(hUriBase + "/", args, function (data, response) {
-//     // parsed response body as js object
-//     console.log(data);
-//     // raw response
-//     console.log(response);
-// });
 
 var port = process.env.PORT || 3000;
 var http = require('http');
