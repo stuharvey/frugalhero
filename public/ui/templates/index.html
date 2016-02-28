@@ -1,27 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+
 <title>Page Title</title>
-    
+
     <link rel="stylesheet" type="text/css" href="/ui/static/css/skeleton.css">
     <link rel="stylesheet" type="text/css" href="/ui/static/css/main.css">
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
     <script src="/lib/jquery-2.1.4.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    
-    
+
+
     <script src="/ui/static/js/main.js"></script>
-    
+
+    $.get('/status', function(user) {
+      var goals = user.goals;
+      if (goals.indexOf('avoidFees') !== -1){
+        if (!$("#atm-skill").hasClass('active') &&)
+      }
+      if (user.gotATMFee) {
+        if($("#atm-skill").hasClass('active'))
+      }
+    });
+
 </head>
 <body>
-    
+
     <!--this is the brief description at the top of the page-->
     <div class="nav">
         <h1>Using the Capital One API we are gamifying the banking and money managing experience while introducing rewards for good practices and reprucussions for irresponsible spending</h1>
     </div>
 
-  <!-- these are the three middle columns-->  
+  <!-- these are the three middle columns-->
   <div class="container">
 
       <!-- columns should be the immediate child of a .row -->
@@ -44,37 +54,37 @@
 
             <div class="four columns blue">
                 <p>SKILLS</p>
-                <button class="skills">Avoid ATM Fees</button>
+                <button class="skills" id="atm-skill">Avoid ATM Fees</button>
                 <br>
-                <button class="skills">Pay Bills on Time</button>
+                <button class="skills" id="bills-skill">Pay Bills on Time</button>
                 <br>
-                <button class="skills">Eat Out Less</button>
+                <button class="skills" id="eat-out">Eat Out Less</button>
                 <br>
-                <button class="skills">Buy Liquor from the Store</button>
+                <button class="skills" id="liquor">Buy Liquor from the Store</button>
                 <br>
-                <button class="skills">Meet a Regular Savings Goal</button>
+                <button class="skills" id="savings">Meet a Regular Savings Goal</button>
             </div>
             <div class="four columns yellow">
                 <p>REWARDS</p>
-                <button class="rewards">Clothes</button>
+                <button class="rewards" id="clothes">Clothes</button>
                 <br>
-                <button class="rewards">Shoes</button>
+                <button class="rewards" id="shoes">Shoes</button>
                 <br>
-                <button class="rewards">Chocolate</button>
+                <button class="rewards" id="chocolate">Chocolate</button>
                 <br>
-                <button class="rewards">Drinks</button>
+                <button class="rewards" id="drinks">Drinks</button>
                 <br>
-                <button class="rewards">Sports Game</button>
+                <button class="rewards" id="sports">Sports Game</button>
             </div>
-            
+
         </div>
 
     </div>
-    
+
     <!-- these are the credits at the bottom-->
     <div class="bottom">
         <p>Powered by Capital One - Inspired by SQL Sentry - Supported by Microsoft Azure</p>
     </div>
-        
+
 </body>
 </html>
