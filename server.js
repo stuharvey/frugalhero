@@ -57,6 +57,22 @@ function c1GetCustPurchases(customerId){
   }
 client.registerMethod('c1GetAccountPurchases', c1UriBase + '/accounts/${id}' + c1ApiKeyParam, 'GET');
 
+// //Habitca One Client
+// var hUriBase = 'https://habitica.com/api/v2';
+// // var hApiKeyParam = '?key=' + CAPITALONE_KEY;
+//
+// var args = {
+//     data: { x-api-user: "12b4ded4-e395-487c-af66-26344864be9b" , x-api-key: "bf00bb1a-1c1f-4751-932b-7b32bc2075dc" },
+//     headers: { "Content-Type": "application/json" }
+// };
+//
+// client.post(hUriBase + "/", args, function (data, response) {
+//     // parsed response body as js object
+//     console.log(data);
+//     // raw response
+//     console.log(response);
+// });
+
 
 var port = process.env.PORT || 3000;
 var http = require('http');

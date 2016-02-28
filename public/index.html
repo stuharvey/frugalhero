@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>$maRPG</title>
+    <link rel="stylesheet" type="text/css" href="/ui/static/css/login.css">
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script type="text/javascript">
+      <script type="text/javascript"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript">
@@ -34,7 +36,7 @@
     }
 
       // $('#').focusout(function(){
-      $("#submit_button").click(function() {
+      function postStuff() {
         console.log("inside function");
 
 
@@ -90,8 +92,13 @@
       </script>
     </head>
     <body>
+        <div class="headers">
+        <p class="top-title">o b s c u r e h a c k a t h o n p r o j e c t</p>
 
-    <div>
+        <p class="quote">Powered by Capital One - Inspired by SQL Sentry - Supported by Microsoft Azure</p>
+            </div>
+
+    <div class="fields">
 
           <form class="form-inline" role="form" id="pageform">
             <input class="form-control" type="text" name="capitalOneAPI" id=cApi placeholder="Enter Captial One API Key" /> <br> <br>
@@ -100,25 +107,32 @@
             <input class="form-control" type="text" name="HabitcaUID" id="hUID" placeholder="Enter Habitca UID" /> <br> <br>
             <br>
             <form class = "form-inline" role = "form">
+
               <div class = "checkbox">
                  <label><input type="checkbox" id="avoidATMFees"> Avoid ATM Fees</label>
               </div>
+                <br>
 
               <div class = "checkbox">
                  <label><input type="checkbox" id="billsOnTime"> Keep track of bills on time</label>
               </div>
+                <br>
 
               <div class = "checkbox">
                  <label><input type="checkbox" id="eatMoreAtHome"> Eat out less, and more at home</label>
               </div>
+                <br>
 
               <div class = "checkbox">
                  <label><input type="checkbox" id="liquorStore"> Buy liquior at grocery store, instead of bars </label>
               </div>
+                <br>
+
+
 
                   <tr>
                       <td colspan="2" align="center">
-                          <input name="check" type="checkbox" id="check" value="Employee " onclick="openDisabledThing()" /> Save</td>
+                          <input name="check" type="checkbox" id="check" value="Employee " onclick="openDisabledThing()" > Save</td>
                   </tr>
                   <tr>
                       <td>
@@ -160,11 +174,12 @@
                   </button>
                 </form>
     </div>
+                <button class="btn btn-secondary btn-sm pull-right" type="submit" name="submit" onclick="postStuff()">
+                  Authorize
+                </button>
 
 
-
-
-  </body>
-
+        </form>
+    </div>
   </body>
 </html>
