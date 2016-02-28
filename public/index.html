@@ -16,12 +16,8 @@
     } else {
         $("#rate").attr("disabled", "disabled");
         $("#duration").attr("disabled", "disabled");
-
-
     }
     }
-
-
 
 
       // $('#').focusout(function(){
@@ -43,7 +39,8 @@
 
           if($('#check').prop('checked')){
 
-            var spendSave = {enabled: $('#check').prop('checked'), rate: $("#rate option:selected").val(), rate: $("#rate option:selected").val(), duration: $("#duration option:selected").val()}
+            var spendSave = {enabled: $('#check').prop('checked'), rate: $("#rate option:selected").val(), duration: $("#duration option:selected").val()};
+            console.log(spendSave);
 
           }
           else{
@@ -56,11 +53,13 @@
           'cAccID':cAccID,
           'uid': hUID,
           'hApiKey':hApi,
+          'loaded': "no",
           'ATMFees': isATMChecked,
           'EatAtHome': isEatMoreAtHome,
           'Bills': isBillsChecked,
           'Liquor': isLiquorStoreChecked,
           'SpendSave': spendSave
+
         };
 
         console.log(JSON.stringify(body));
@@ -71,14 +70,14 @@
               contentType:"application/json; charset=utf-8",
               type: 'PUT',
               success: function(response) {
-                  console.log("hi");
-                  alert.log("hi")
+                  // console.log("hi");
+                  // alert.log("hi")
               },
               error: function(error) {
 
               }
           });
-        console.log("end of func");
+        // console.log("end of func");
       }
 
 
@@ -156,9 +155,10 @@
 
                       <td>
                           <select name="type" id="duration" disabled="disabled">
-                              <option value="Daily">Daily</option>
-                              <option value="Monthly">Monthly</option>
-                              <option value="Yearly">Yearly</option>
+                              <!-- <option value="Daily">Daily</option> -->
+                              <option value="Weekly">Weekly</option>
+                              <!-- <option value="Monthly">Monthly</option>
+                              <option value="Yearly">Yearly</option> -->
                           </select>
                       </td>
                   </tr>
