@@ -1,0 +1,86 @@
+html
+{
+    background-color: #474350;
+}
+
+body
+{
+    text-align: center;  
+}
+
+.headers
+{
+    height: 15em;
+    background-color: #474350;
+}
+
+.fields
+{
+    width: 50%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.top-title
+{
+    font-size: 50px;
+    text-align: center;
+    color: #F8FFF4;
+    font-family: 'Raleway', sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1%;
+}
+
+.quote
+{
+    color: #FECDAA;
+    font-style: italic;
+}
+
+.form-inline
+{
+    text-align: justify;
+    height: 10em;
+    font-family: 'Raleway', sans-serif;
+    margin-left: auto;
+    background-color: #F8FFF4;
+    margin-top: auto;
+}
+
+.checkbox
+{
+    background-color: #F8FFF4;
+    clear: both;
+}
+
+
+
+::-webkit-input-placeholder {
+   text-align: center;
+    color: #474350;
+    font-family: 'Raleway', sans-serif;
+    background-color: #F8FFF4;
+    outline: none;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;
+    color: #474350;
+    font-family: 'Raleway', sans-serif;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;
+    color: #474350;
+    font-family: 'Raleway', sans-serif;
+}
+
+:-ms-input-placeholder {  
+   text-align: center;
+    color: #474350;
+    font-family: 'Raleway', sans-serif;
+}
+
+
