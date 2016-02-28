@@ -30,6 +30,9 @@
     "eslint": "^2.2.0",
     "nodemon": "^1.9.1"
   },
+  "engines": {
+    "node": "5.4.0"
+  },
   "eslintConfig": {
     "env": {
       "node": true
