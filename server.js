@@ -33,7 +33,7 @@ function storeConfig(req, res) {
     log.error('store failed: ' + e);
     res.status(500).end();
   }
-  res.status(200).end();
+  res.status(200).send();
 }
 
 var Client = require('node-rest-client').Client;

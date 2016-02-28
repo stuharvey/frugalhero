@@ -2,14 +2,25 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ayy</title>
+    <title>$maRPG</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script type="text/javascript">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
-    function openDisabledThing() {
+      console.log('We can actaully console.log');
+      function openDisabledThing() {
+        if (($("#check:checked").length) > 0) {
+            $("#rate").removeAttr("disabled");
+            $("#duration").removeAttr("disabled");
+        } else {
+            $("#rate").attr("disabled", "disabled");
+            $("#duration").attr("disabled", "disabled");
+        }
+      }
+
+      console.log("ok... what about trying to select our button?");
 
     if (($("#check:checked").length) > 0) {
         $("#rate").removeAttr("disabled");
@@ -23,7 +34,7 @@
     }
 
       // $('#').focusout(function(){
-      function postStuff() {
+      $("#submit_button").click(function() {
         console.log("inside function");
 
 
@@ -33,13 +44,13 @@
         var hApi = $('#hUID').val();
 
         //determine if booleans are true
-          var isATMChecked = {enabled: $('#avoidATMFees').prop('checked')}
-          var isBillsChecked = {enabled: $('#avoidATMFees').prop('checked')}
-          var isEatMoreAtHome = {enabled: $('#eatMoreAtHome').prop('checked')}
-          var isLiquorStoreChecked = {enabled: $('#liquorStore').prop('checked')};
+        var isATMChecked = {enabled: $('#avoidATMFees').prop('checked')}
+        var isBillsChecked = {enabled: $('#avoidATMFees').prop('checked')}
+        var isEatMoreAtHome = {enabled: $('#eatMoreAtHome').prop('checked')}
+        var isLiquorStoreChecked = {enabled: $('#liquorStore').prop('checked')};
 
 
-          if($('#check').prop('checked')){
+        if($('#check').prop('checked')){
 
             var spendSave = {enabled: $('#check').prop('checked'), rate: $("#rate option:selected").val(), rate: $("#duration option:selected").val() }
 
@@ -65,7 +76,7 @@
               url: 'http://localhost:3000/config/' + hUID,
               data: JSON.stringify(body),
               contentType:"application/json; charset=utf-8",
-              type: 'PUT',
+              type: 'POST',
               success: function(response) {
                   console.log("hi");
               },
@@ -77,41 +88,32 @@
       }
 
       </script>
-
     </head>
     <body>
-    <div id="video-header">
-      <video id="video1"
-        loop="" autoplay="true">
-        <source type="video/mp4"
-         src="header.mp4">
-        </source>
-      </video>
-    </div>
-
 
     <div>
 
+          <form class="form-inline" role="form" id="pageform">
             <input class="form-control" type="text" name="capitalOneAPI" id=cApi placeholder="Enter Captial One API Key" /> <br> <br>
             <input class="form-control" type="text" name="capitalOneAccountID" id=cAcc placeholder="Enter Capital One Account ID" /> <br> <br>
             <input class="form-control" type="text" name="HabitcaAPIKey" id=hApi placeholder="Enter Habitca API Key" /> <br> <br>
-            <input class="form-control" type="text" name="HabitcaUID" id=hUID placeholder="Enter Habitca UID" /> <br> <br>
+            <input class="form-control" type="text" name="HabitcaUID" id="hUID" placeholder="Enter Habitca UID" /> <br> <br>
             <br>
             <form class = "form-inline" role = "form">
               <div class = "checkbox">
-                 <label><input type = "checkbox" id="avoidATMFees"> Avoid ATM Fees</label>
+                 <label><input type="checkbox" id="avoidATMFees"> Avoid ATM Fees</label>
               </div>
 
               <div class = "checkbox">
-                 <label><input type = "checkbox" id ="billsOnTime"> Keep track of bills on time</label>
+                 <label><input type="checkbox" id="billsOnTime"> Keep track of bills on time</label>
               </div>
 
               <div class = "checkbox">
-                 <label><input type = "checkbox" id="eatMoreAtHome"> Eat out less, and more at home</label>
+                 <label><input type="checkbox" id="eatMoreAtHome"> Eat out less, and more at home</label>
               </div>
 
               <div class = "checkbox">
-                 <label><input type = "checkbox" id="liquorStore"> Buy liquior at grocery store, instead of bars </label>
+                 <label><input type="checkbox" id="liquorStore"> Buy liquior at grocery store, instead of bars </label>
               </div>
 
                   <tr>
@@ -153,15 +155,13 @@
                           </select>
                       </td>
                   </tr>
-
-
-
-
-
-                <button class="btn btn-primary btn-sm pull-right" type="submit" name="submit" onclick="postStuff()">
-                  Authorize
-                </button>
+                  <button type="submit" class="btn btn-primary btn-sm pull-right" id="submit_button">
+                    Authorize
+                  </button>
+                </form>
     </div>
+
+
 
 
   </body>
