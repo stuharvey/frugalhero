@@ -128,7 +128,6 @@ function getCurrentStatus() {
     log.debug('Current balance: ' + user.balance);
     user.balance = 0;
     accounts.forEach(function (account) {
-      log.debug(account);
       user.balance += account.balance;
       var account_id = account._id;
 
@@ -171,7 +170,7 @@ function contains(s1, s2) {
   return s1.indexOf(s2) !== -1;
 }
 
-setInterval(getCurrentStatus, 20*1000*10);
+setInterval(getCurrentStatus, 30*1000*10);
 
 // Capital One Client
 var c1UriBase = 'http://api.reimaginebanking.com';

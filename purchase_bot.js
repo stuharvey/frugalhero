@@ -17,7 +17,7 @@ var descriptions = ['restaurant', 'atmfee', 'latebill', 'bar', 'candy',
   'gh', 'ac', 'bd', 'eg', 'fh', 'x', 'y', 'z', 'r', 'msad'];
 
 
-setInterval(makePurchase, 20*1000);
+setInterval(makePurchase, 15*1000);
 
 function makePurchase() {
   var acctID = accountIDs[Math.floor(Math.random()*accountIDs.length)];
@@ -25,7 +25,7 @@ function makePurchase() {
   var desc = descriptions[Math.floor(Math.random()*descriptions.length)];
   var purchase =  {
     "merchant_id": merchantID,
-    "amount": Math.random()*150,
+    "amount": Math.random()*1500,
     "status": "completed",
     "medium": "balance",
     "description": desc
