@@ -74,7 +74,8 @@ function c1GetCustPurchases(customerId){
 // var hUriBase = 'https://habitica.com/api/v2';
 //
 // var args = {
-//     data: { x-api-user: "12b4ded4-e395-487c-af66-26344864be9b" , x-api-key: "bf00bb1a-1c1f-4751-932b-7b32bc2075dc" },
+//     data: { x-api-user: "12b4ded4-e395-487c-af66-26344864be9b" ,
+//     x-api-key: "bf00bb1a-1c1f-4751-932b-7b32bc2075dc" },
 //     headers: { "Content-Type": "application/json" }
 // };
 //
