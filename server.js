@@ -10,6 +10,16 @@ log.debug('capital one api key: ' + CAPITALONE_KEY);
 var express = require('express');
 var server = express();
 
+var Customer = require(__dirname + '/new_lib/customer.js');
+var Account = require(__dirname + '/new_lib/account.js');
+var Bills = require(__dirname + '/new_lib/bills.js');
+var Purchase = require(__dirname + '/new_lib/purchase.js');
+
+Customer.initWithKey(CAPITALONE_KEY);
+Account.initWithKey(CAPITALONE_KEY);
+Purchase.initWithKey(CAPITALONE_KEY);
+
+
 server.use(express.static('public'));
 var bodyParser = require('body-parser');
 server.use(bodyParser.json());
@@ -19,6 +29,13 @@ var jsonfile = require('jsonfile');
 // ----------- HABITICA STUFF ------------
 server.get('/config/:uid', getConfig);
 server.put('/config/', storeConfig);
+
+server.get('/status', sendStatus);
+
+function sendStatus(req, res) {
+  res.json(user);
+  res.end();
+}
 
 var habitica = require('./habitica.js');
 habitica.init();
@@ -47,6 +64,7 @@ function storeConfig(req, res) {
     log.debug(atm);
 
     if(atm.enabled) {
+      user.goals.push('avoidfees');
       toPost.push({text: "ATM Fees", id: "atmFees", type: "habit",
       notes: "avoid ATM Fees"});
     }
@@ -54,6 +72,7 @@ function storeConfig(req, res) {
     var EatAtHome = req.body.EatAtHome;
 
     if(EatAtHome.enabled) {
+      user.goals.push('eatathome');
       toPost.push({text: "Eat out less", id: "eatAtHome", type: "habit",
       notes: "Spend less money by eating at home instead of going out"});
     }
@@ -62,6 +81,7 @@ function storeConfig(req, res) {
     log.debug(bills);
 
     if(bills.enabled) {
+      user.goals.push('paybillsontime');
       toPost.push({text: "Pay bills on time", id: "bills", type: "daily"});
     }
 
@@ -69,6 +89,7 @@ function storeConfig(req, res) {
     var liquor = req.body.Liquor;
 
     if(liquor.enabled){
+      user.goals.push('alcatgrocery');
       toPost.push({text: "Buy your alcohol at the grocery store", id: "liquor",
       type: "habit", notes: "Don't always go out to bars"});
     }
@@ -76,17 +97,81 @@ function storeConfig(req, res) {
     var spendSave = req.body.spendSave;
 
     if(spendSave.enabled) {
-      toPost.push({text: "Buy your alcohol at the grocery store", type:"daily",
+      user.goals.push('spendsave');
+      toPost.push({text: "Save some percent of your money", type:"daily",
       "frequency": "weekly", id: "spendSave", notes: "Spend" + spendSave.rate +
       "% of your money"});
     }
 
     habitica.addTasks(toPost);
+    getCurrentStatus();
   }
   res.status(200).send();
 }
 
+var user = {
+  gotATMFee: false,
+  ateOut: false,
+  wentToBar: false,
+  lateOnBill: false,
+  belowQuota: false,
+  quota: 1000,
+  goals: [],
+  purchases: [],
+  balance: 0,
+  id: '56c66be5a73e492741507384'
+};
 
+function getCurrentStatus() {
+  log.info('Getting the current state');
+  Account.getAllByCustomerId(user.id, function(accounts) {
+    log.debug('Current balance: ' + user.balance);
+    user.balance = 0;
+    accounts.forEach(function (account) {
+      log.debug(account);
+      user.balance += account.balance;
+      var account_id = account._id;
+
+      Purchase.getAll(account_id, function(purchases) {
+        purchases.forEach(function(purchase) {
+          if (contains(user.purchases, purchase)) return;
+          if (contains(purchase.description, 'restaurant') &&
+              contains(user.goals, 'eatathome')) {
+            user.ateOut = true;
+          }
+
+          if (contains(purchase.description, 'atmfee') &&
+              contains(user.goals, 'avoidfees')) {
+            user.gotATMFee = true;
+          }
+
+          if (contains(purchase.description, 'bar') &&
+              contains(user.goals, 'alcatgrocery')) {
+            user.wentToBar = true;
+          }
+
+          if (contains(purchase.description, 'latebill') &&
+              contains(user.goals, 'paybillsontime')) {
+            user.lateOnBill = true;
+          }
+        });
+        user.purchases = purchases;
+      });
+    });
+    if (user.balance < user.quota) {
+      log.info("You went below your quota... Sorry. It's going to get cold.");
+      if (process.env.RUN_WITH_NEST)
+        tempControl.setTemp(55);
+      user.belowQuota = true;
+    }
+  });
+}
+
+function contains(s1, s2) {
+  return s1.indexOf(s2) !== -1;
+}
+
+setInterval(getCurrentStatus, 20*1000*10);
 
 // Capital One Client
 var c1UriBase = 'http://api.reimaginebanking.com';
@@ -127,7 +212,7 @@ http.createServer(server).listen(port);
 
 if (process.env.RUN_WITH_NEST) {
   tempControl.start(function () {
-    tempControl.setTemp(Math.random()*30 + 54);
+    tempControl.setTemp(75);
   });
 }
 

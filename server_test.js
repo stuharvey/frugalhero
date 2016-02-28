@@ -17,9 +17,9 @@ var Purchase = require(__dirname + '/new_lib/purchase.js');
 var custID = '56c66be5a73e492741507383';
 var accID = '56c66be6a73e492741507db7';
 
-// customerDemo(CAPITALONE_KEY, Customer, custID, accID);
-// accountDemo(CAPITALONE_KEY, Account, custID, accID);
-// billsDemo(CAPITALONE_KEY, Bills, custID, accID);
+customerDemo(CAPITALONE_KEY, Customer, custID, accID);
+accountDemo(CAPITALONE_KEY, Account, custID, accID);
+billsDemo(CAPITALONE_KEY, Bills, custID, accID);
 purchaseDemo(CAPITALONE_KEY, Purchase, custID, accID);
 
 
