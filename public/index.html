@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Ayy</title>
+    <title>Gamify Your Bank Account</title>
     <link rel="stylesheet" type="text/css" href="/ui/static/css/login.css">
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -27,10 +27,10 @@
         console.log("inside function");
 
 
-        var cApi = $('#cApi').val();
-        var cAccID= $('#cAcc').val();
-        var hUID = $('#hApi').val();
-        var hApi = $('#hUID').val();
+        // var cApi = $('#cApi').val();
+        // var cAccID= $('#cAcc').val();
+        // var hUID = $('#hApi').val();
+        // var hApi = $('#hUID').val();
 
         //determine if booleans are true
           var isATMChecked = {enabled: $('#avoidATMFees').prop('checked')}
@@ -49,10 +49,10 @@
               var spendSave = {enabled: $('#check').prop('checked')}
           }
         var body = {
-          'cApiKey':cApi,
-          'cAccID':cAccID,
-          'uid': hUID,
-          'hApiKey':hApi,
+          // 'cApiKey':cApi,
+          // 'cAccID':cAccID,
+          // 'uid': hUID,
+          // 'hApiKey':hApi,
           'loaded': "no",
           'ATMFees': isATMChecked,
           'EatAtHome': isEatMoreAtHome,
@@ -90,10 +90,10 @@
 
 
       <form class = "form-inline" role = "form">
-            <input class="form-control" type="text" name="capitalOneAPI" id=cApi placeholder="Enter Captial One API Key" /> <br> <br>
+            <!-- <input class="form-control" type="text" name="capitalOneAPI" id=cApi placeholder="Enter Captial One API Key" /> <br> <br>
             <input class="form-control" type="text" name="capitalOneAccountID" id=cAcc placeholder="Enter Capital One Account ID" /> <br> <br>
             <input class="form-control" type="text" name="HabitcaAPIKey" id=hApi placeholder="Enter Habitca API Key" /> <br> <br>
-            <input class="form-control" type="text" name="HabitcaUID" id=hUID placeholder="Enter Habitca UID" /> <br> <br>
+            <input class="form-control" type="text" name="HabitcaUID" id=hUID placeholder="Enter Habitca UID" /> <br> <br> -->
             <br>
               <div class = "checkbox">
                  <label><input type = "checkbox" id="avoidATMFees"> Avoid ATM Fees</label>
