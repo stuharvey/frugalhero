@@ -16,11 +16,11 @@ body
 
 .fields
 {
-    width: 50%;
+    width: 40%;
     text-align: center;
+    height: 30em;
     margin-left: auto;
     margin-right: auto;
-    height: 30em;
 }
 
 .top-title
@@ -42,18 +42,41 @@ body
 
 .form-inline
 {
-    text-align: center;
+    text-align: justify;
     height: 30em;
     font-family: 'Raleway', sans-serif;
-    margin-left: auto;
     background-color: #F8FFF4;
     margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.form-control
+{
+    outline: none;
+}
+
+#cApi
+{
+    width: 100%;
+}
+#cAcc
+{
+    width: 100%;
+}
+#hApi
+{
+    width: 100%;
+}
+#hUID
+{
+    width: 100%;
 }
 
 .checkbox
 {
     background-color: #F8FFF4;
-    clear: both;
 }
 
 
