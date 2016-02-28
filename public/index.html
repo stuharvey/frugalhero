@@ -16,7 +16,7 @@
     } else {
         $("#rate").attr("disabled", "disabled");
         $("#duration").attr("disabled", "disabled");
-    }
+      }
     }
 
 
@@ -32,7 +32,7 @@
 
         //determine if booleans are true
           var isATMChecked = {enabled: $('#avoidATMFees').prop('checked')}
-          var isBillsChecked = {enabled: $('#avoidATMFees').prop('checked')}
+          var isBillsChecked = {enabled: $('#billsOnTime').prop('checked')}
           var isEatMoreAtHome = {enabled: $('#eatMoreAtHome').prop('checked')}
           var isLiquorStoreChecked = {enabled: $('#liquorStore').prop('checked')};
 
@@ -62,7 +62,6 @@
 
         };
 
-        console.log(JSON.stringify(body));
 
         $.ajax({
               url: 'http://localhost:3000/config/',
@@ -70,14 +69,10 @@
               contentType:"application/json; charset=utf-8",
               type: 'PUT',
               success: function(response) {
-                  // console.log("hi");
-                  // alert.log("hi")
               },
               error: function(error) {
-
               }
           });
-        // console.log("end of func");
       }
 
 
@@ -97,18 +92,18 @@
 
     <div>
 
+
+
+      <form class = "form-inline" role = "form">
             <input class="form-control" type="text" name="capitalOneAPI" id=cApi placeholder="Enter Captial One API Key" /> <br> <br>
             <input class="form-control" type="text" name="capitalOneAccountID" id=cAcc placeholder="Enter Capital One Account ID" /> <br> <br>
             <input class="form-control" type="text" name="HabitcaAPIKey" id=hApi placeholder="Enter Habitca API Key" /> <br> <br>
             <input class="form-control" type="text" name="HabitcaUID" id=hUID placeholder="Enter Habitca UID" /> <br> <br>
             <br>
 
-            <form class = "form-inline" role = "form">
-
               <div class = "checkbox">
                  <label><input type = "checkbox" id="avoidATMFees"> Avoid ATM Fees</label>
               </div>
-
 
               <div class = "checkbox">
                  <label><input type = "checkbox" id ="billsOnTime"> Keep track of bills on time</label>
@@ -152,7 +147,6 @@
                       </td>
                   </tr>
                   <tr>
-
                       <td>
                           <select name="type" id="duration" disabled="disabled">
                               <!-- <option value="Daily">Daily</option> -->
@@ -163,13 +157,10 @@
                       </td>
                   </tr>
 
-
-
-
-
-                <button class="btn btn-primary btn-sm pull-right" type="submit" name="submit" onclick="postStuff()">
+                <button class="btn btn-primary btn-sm pull-right" name="submit" onclick="postStuff()">
                   Authorize
                 </button>
+      </form>
     </div>
 
 
