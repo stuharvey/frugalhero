@@ -16,9 +16,9 @@ server.use(bodyParser.json());
 
 var jsonfile = require('jsonfile');
 
+// ----------- HABITICA STUFF ------------
 server.get('/config/:uid', getConfig);
 server.put('/config', storeConfig);
-
 
 function getConfig(req, res) {
   var config = fs.readFileSync(req.params.uid+'.json', 'utf8');
