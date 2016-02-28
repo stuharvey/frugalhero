@@ -39,21 +39,49 @@ h1
 }
 .hp
 {
-    padding-top: 5%;
+    padding-top: 3%;
 }
 .health-bar
 {
     width: 50%;
-    color: red;
-    position: relative;
+    background-color: #FECDAA;
+    margin-left: auto;
+    margin-right: auto;
+    height: 8px;
+    z-index: 1;
+}
+.health-bar-value
+{
+    height: 8px;
+    float: left;
+    background-color: red;
+    width: 10%;
+    z-index: 2;
 }
 .xp
 {
     padding-top: 1%;
 }
+.xp-bar
+{
+    width: 50%;
+    background-color: #FAFAC6;
+    margin-left: auto;
+    margin-right: auto;
+    height: 8px;
+    z-index: 1;
+}
+.xp-bar-value
+{
+    height: 8px;
+    float: left;
+    background-color: orange;
+    width: 10%;
+    z-index: 2;
+}
 .status
 {
-    padding-top: 5%;
+    padding-top: 3%;
 }
 
 .blue
