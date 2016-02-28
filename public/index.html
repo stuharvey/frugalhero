@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>Ayy</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script type="text/javascript">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript">
@@ -21,6 +20,9 @@
 
     }
     }
+
+
+
 
       // $('#').focusout(function(){
       function postStuff() {
@@ -41,12 +43,14 @@
 
           if($('#check').prop('checked')){
 
-            var spendSave = {enabled: $('#check').prop('checked'), rate: $("#rate option:selected").val(), rate: $("#duration option:selected").val() }
+            var spendSave = {enabled: $('#check').prop('checked'), rate: $("#rate option:selected").val(), rate: $("#rate option:selected").val(), duration: $("#duration option:selected").val()}
 
           }
           else{
               var spendSave = {enabled: $('#check').prop('checked')}
           }
+
+
         var body = {
           'cApiKey':cApi,
           'cAccID':cAccID,
@@ -62,19 +66,21 @@
         console.log(JSON.stringify(body));
 
         $.ajax({
-              url: 'http://localhost:3000/config/' + hUID,
+              url: 'http://localhost:3000/config/',
               data: JSON.stringify(body),
               contentType:"application/json; charset=utf-8",
               type: 'PUT',
               success: function(response) {
                   console.log("hi");
+                  alert.log("hi")
               },
               error: function(error) {
-                  alert(error);
+
               }
           });
         console.log("end of func");
       }
+
 
       </script>
 
@@ -97,10 +103,13 @@
             <input class="form-control" type="text" name="HabitcaAPIKey" id=hApi placeholder="Enter Habitca API Key" /> <br> <br>
             <input class="form-control" type="text" name="HabitcaUID" id=hUID placeholder="Enter Habitca UID" /> <br> <br>
             <br>
+
             <form class = "form-inline" role = "form">
+
               <div class = "checkbox">
                  <label><input type = "checkbox" id="avoidATMFees"> Avoid ATM Fees</label>
               </div>
+
 
               <div class = "checkbox">
                  <label><input type = "checkbox" id ="billsOnTime"> Keep track of bills on time</label>
