@@ -1,3 +1,4 @@
+"use strict";
 var log=require('debug-logger')('hacktheplanet');
 
 var fs = require('fs');
@@ -32,30 +33,49 @@ function storeConfig(req, res) {
   res.status(200).end();
 }
 
-var Client = require('node-rest-client').Client;
-var client = new Client();
+//var Client = require('node-rest-client').Client;
+//var client = new Client();
 // Capital One Client
 var c1UriBase = 'http://api.reimaginebanking.com';
+//var c1UriHost = 'api.reimaginebanking.com';
 var c1ApiKeyParam = '?key=' + CAPITALONE_KEY;
 
-function c1CustLastUpdate(customerId){
+var req = require('sync-request');
+function c1GetAllAccounts(){
+  return JSON.parse(req('GET', c1UriBase + '/accounts' + c1ApiKeyParam).
+      getBody());
 }
-function c1GetCustAccountNumbers(customerId){
-  var numbers = [];
-  client.methods.c1GetCustAccounts({}, /*callback*/ function(data, resp) {
-    data.forEach(function(c){ numbers.push(c._id); });
+function c1GetCustomersAccounts(customerId){
+  return JSON.parse(req('GET', c1UriBase + '/customers/' + customerId +
+      '/accounts' + c1ApiKeyParam).getBody());
+}
+function c1GetCustAccountIds(customerId){
+  return c1GetCustomersAccounts(customerId).map(function(x){
+    return x._id;
   });
 }
-client.registerMethod('c1GetCustAccounts', c1UriBase + '/customers/${id}/accounts' + c1ApiKeyParam, 'GET');
-client.registerMethod('c1GetMerchant', c1UriBase + '/merchants/${id}' + c1ApiKeyParam, 'GET');
+function c1GetAccountPurchases(accountId){
+  return JSON.parse(req('GET', c1UriBase + '/accounts/' + accountId +
+    '/purchases' + c1ApiKeyParam).getBody());
+}
 function c1GetCustPurchases(customerId){
-  var accounts = c1GetCustAccountNumbers(customerId);
-  }
-client.registerMethod('c1GetAccountPurchases', c1UriBase + '/accounts/${id}' + c1ApiKeyParam, 'GET');
+  var purchases = [];
+  c1GetCustAccountIds(customerId).forEach(function(each){
+    c1GetAccountPurchases(each).forEach(function(each){
+      purchases.push(each);
+    });
+  });
+  return purchases;
+}
 
+log.debug(c1GetCustPurchases('56c66be5a73e492741507383'));
+//log.debug(c1GetCustomersAccounts('56c66be5a73e492741507383'));
 
 var port = process.env.PORT || 3000;
 var http = require('http');
 http.createServer(server).listen(port);
 
-log.info("Listening on port: " + port);
+log.info('Listening on port: ' + port);
+
+//log.debug('trying a thing', c1GetCustPurchases('56c66be5a73e492741507383'));
+//log.debug('trying a thing', c1GetCustPurchases('56c66be6a73e492741507dc4'));
