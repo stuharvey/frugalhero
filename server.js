@@ -206,6 +206,17 @@ function c1GetCustPurchases(customerId){
   return purchases;
 }
 
+function c1GetCustomerWithdrawals(customerId){
+  var withdrawals = [];
+  return JSON.parse(req('GET', c1UriBase + '/accounts/' + customerId +
+        '/withdrawal' + c1ApiKeyParam).getBody());
+}
+function c1GetAtmWithdrawals(customerId){
+  return c1GetCustomerWithdrawals(customerId).filter(function(x){
+    x.description.includes('ATM');
+  });
+}
+
 var port = process.env.PORT || 3000;
 var http = require('http');
 http.createServer(server).listen(port);
