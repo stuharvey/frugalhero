@@ -3,6 +3,9 @@ var log=require('debug-logger')('hacktheplanet');
 
 var fs = require('fs');
 var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key', 'utf8');
+
+var tempControl = require('./control.js');
+
 log.debug('capital one api key: ' + CAPITALONE_KEY);
 
 var express = require('express');
@@ -16,6 +19,7 @@ var jsonfile = require('jsonfile');
 
 server.get('/config/:uid', getConfig);
 server.put('/config', storeConfig);
+
 
 function getConfig(req, res) {
   var config = fs.readFileSync(req.params.uid+'.json', 'utf8');
@@ -33,8 +37,6 @@ function storeConfig(req, res) {
   res.status(200).end();
 }
 
-//var Client = require('node-rest-client').Client;
-//var client = new Client();
 // Capital One Client
 var c1UriBase = 'http://api.reimaginebanking.com';
 //var c1UriHost = 'api.reimaginebanking.com';
@@ -68,14 +70,29 @@ function c1GetCustPurchases(customerId){
   return purchases;
 }
 
-log.debug(c1GetCustPurchases('56c66be5a73e492741507383'));
-//log.debug(c1GetCustomersAccounts('56c66be5a73e492741507383'));
+// //Habitica One Client
+// var hUriBase = 'https://habitica.com/api/v2';
+//
+// var args = {
+//     data: { x-api-user: "12b4ded4-e395-487c-af66-26344864be9b" , x-api-key: "bf00bb1a-1c1f-4751-932b-7b32bc2075dc" },
+//     headers: { "Content-Type": "application/json" }
+// };
+//
+// client.post(hUriBase + "/", args, function (data, response) {
+//     // parsed response body as js object
+//     console.log(data);
+//     // raw response
+//     console.log(response);
+// });
 
 var port = process.env.PORT || 3000;
 var http = require('http');
 http.createServer(server).listen(port);
 
-log.info('Listening on port: ' + port);
+if (process.env.RUN_WITH_NEST) {
+  tempControl.start(function () {
+    tempControl.setTemp(Math.random()*30 + 54);
+  });
+}
 
-//log.debug('trying a thing', c1GetCustPurchases('56c66be5a73e492741507383'));
-//log.debug('trying a thing', c1GetCustPurchases('56c66be6a73e492741507dc4'));
+log.info("Listening on port: " + port);
