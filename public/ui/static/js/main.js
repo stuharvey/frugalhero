@@ -15,13 +15,26 @@
 
 $(document).ready(function () {
     "use strict";
-    $("button").on("click", function (e) {
+    $(".skills").on("click", function (e) {
         if ($(this).hasClass('active')) {
-            $(".health-bar-value").css({"width": "50%"});
+            $(".health-bar-value").css({"width": "30%"});
             $(this).removeClass('active');
         } else {
             $(this).addClass('active');
-            $(".health-bar-value").css({"width": "100%"});
+            $(".health-bar-value").css({"width": "70%"});
+        }
+    });
+});
+
+$(document).ready(function () {
+    "use strict";
+    $(".rewards").on("click", function (e) {
+        if ($(this).hasClass('active')) {
+            $(".xp-bar-value").css({"width": "50%"});
+            $(this).removeClass('active');
+        } else {
+            $(this).addClass('active');
+            $(".xp-bar-value").css({"width": "90%"});
         }
     });
 });
