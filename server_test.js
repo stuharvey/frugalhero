@@ -2,6 +2,7 @@ var fs = require('fs');
 var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key', 'utf8');
 
 var request = require('superagent');
+// var capital_one = require(__dirname + 'new_lib/capital_one.js');
 
 var Config = {
   baseUrl: 'http://api.reimaginebanking.com:80',
@@ -10,38 +11,34 @@ var Config = {
 
 var Customer = require(__dirname + '/new_lib/customer.js');
 var Account = require(__dirname + '/new_lib/account.js');
+var Bills = require(__dirname + '/new_lib/bills.js');
+var Purchase = require(__dirname + '/new_lib/purchase.js');
 
-customerDemo(CAPITALONE_KEY, Customer);
-accountDemo(CAPITALONE_KEY, Account);
+var custID = '56c66be5a73e492741507383';
+var accID = '56c66be6a73e492741507db7';
+
+// customerDemo(CAPITALONE_KEY, Customer, custID, accID);
+// accountDemo(CAPITALONE_KEY, Account, custID, accID);
+// billsDemo(CAPITALONE_KEY, Bills, custID, accID);
+purchaseDemo(CAPITALONE_KEY, Purchase, custID, accID);
 
 
-// requirejs(['account', 'atm', 'branch', 'customer', 'deposit', 'withdrawal',
-//   'bills', 'merchant', 'purchase'], function (account, atm, branch, customer,
-//   deposit, withdrawal, bills, merchant, purchase) {
-//     var apikey = CAPITALONE_KEY;
-//     accountDemo(apikey, account); // !!! Verified !!!
-// 		atmDemo(apikey, atm); // !!! Verified !!!
-// 		branchDemo(apikey, branch); // !!! Verified !!!
-// 		customerDemo(apikey, customer); // !!! Verified !!!
-// 		depositDemo(apikey, deposit); // !!! Verified - One 404 Error !!!
-// 		withdrawalDemo(apikey, withdrawal); // !!! Verified !!!
-// 		billsDemo(apikey, bills); // !!! Verified !!!
-// 		merchantDemo(apikey, merchant); // !!! Verified !!!
-// 		purchaseDemo(apikey, purchase); // No Purchases for existing accounts
-//
-// });
-
-function purchaseDemo (apikey, purchase) {
-  console.log('purchase Demo');
+function purchaseDemo (apikey, purchase, custID, accID) {
   var purchaseAccount = purchase.initWithKey(apikey);
-  var accID = '55e94a6cf8d8770528e6196d';
 
-  var samplePurchase = '{ "merchant_id": "55e94a6cf8d8770528e6196d", "medium": "balance", "purchase_date": "string", "amount": 0, "status": "pending", "description": "string" }';
-  var samplePUrchaseUpdate = '{ "payer_id": "string", "medium": "balance", "amount": 0, "description": "string" }';
-  console.log("[purchase - get all purchases] Response: " + purchaseAccount.getAll(accID));
+  // Need to fix merchant_id
+  var samplePurchase = "{ \"merchant_id\": \"55e94a6cf8d8770528e6196d\","+
+  "\"medium\": \"balance\", \"purchase_date\": \"string\", \"amount\": ,"+
+  "\"status\": \"pending\", \"description\": \"string\" }";
+  purchaseAccount.getAll(accID, function(purchases) {
+    console.log("[purchase - get all purchases] Response: ");
+    console.log(purchases);
+  });
   // var purchaseID = purchaseAccount.getAll(accID)[0]._id;
   // console.log("[purchase - get purchase] Response: " + purchaseAccount.getPurchase(purchaseID));
-  console.log("[purchase - create purchase] Response: " + purchaseAccount.createPurchase(accID, samplePurchase));
+  purchaseAccount.createPurchase(accID, samplePurchase, function(res) {
+    console.log("[purchase - create purchase] Response: " + res);
+  });
   //var lastPurchase = purchaseAccount.getAll(accID).pop();
   //console.log("[purchase - update purchase] Response: " + purchaseAccount.updatePurchase(lastPurchase._id, samplePUrchaseUpdate));
   // console.log("[purchase - delete purchase] Response: " + purchaseAccount.deletePurchase(purchaseID));
@@ -60,23 +57,28 @@ function merchantDemo (apikey, merchant) {
   console.log("[merchant - update merchant] Response: " + merchantAccount.updateMerchant(merchantID, sampleMerchantUpdate));
 }
 
-function billsDemo (apikey, bills) {
-  console.log('bills Demo');
+function billsDemo (apikey, bills, custID, accID) {
   var billAccount = bills.initWithKey(apikey);
-  var accID = '55e94a6cf8d8770528e6196d';
-  var custID = '55e94a6af8d8770528e60e64';
   var sampleBill = "{\"status\": \"pending\",\"payee\": \"Verizon\",\"nickname\": \"Cable/Internet\",\"payment_date\": \"2015-09-18\", \"recurring_date\": 1, \"payment_amount\": 50 }";
   var sampleBillUpdate = "{\"status\": \"cancelled\",\"payee\": \"Verizon\",\"nickname\": \"Cable/Internet\",\"payment_date\": \"2015-09-18\", \"recurring_date\": 1, \"payment_amount\": 30 }";
 
-  console.log('[bills - get an account\'s bills] Response: ' + billAccount.getAllByAccountId(accID));
-  console.log('[bills - get a customer\'s bills] Response: ' + billAccount.getAllByCustomerId(custID));
-  var billID = billAccount.getAllByCustomerId(custID)[0]._id;
-  console.log('[bills - get a specific bill] Response: ' + billAccount.getBill(billID));
-  console.log('[bills - create a bill] Response: ' + billAccount.createBill(accID, sampleBill));
-
-  var lastBill = billAccount.getAllByAccountId(accID).pop();
-  console.log('[bills - update a bill] Response: ' + billAccount.updateBill(lastBill._id, sampleBill));
-  console.log('[bills - delete bill] Response: ' + billAccount.deleteBill(billID));
+  billAccount.getAllByAccountId(accID, function(bills) {
+    console.log('[Bills - get an account\'s bills] Response: ');
+    console.log(bills);
+  });
+  billAccount.getAllByCustomerId(custID, function(bills) {
+    console.log('[Bills - get a customer\'s bills] Response: ');
+    console.log(bills);
+    var billID = bills[0]._id;
+    billAccount.getBill(billID, function(bill) {
+      console.log('[Bills - get a specific bill] Response: ');
+      console.log(bill);
+    });
+  });
+  billAccount.createBill(accID, sampleBill, function(res) {
+    console.log('[Bills - create a bill] Response: ');
+    console.log(res);
+  });
 }
 
 function withdrawalDemo (apikey, withdrawal) {
@@ -113,10 +115,8 @@ function depositDemo (apikey, deposit) {
   // console.log("[Deposit - Delete Deposit]: " + depositAccount.deleteDeposit('56007939ce1cef140015e48a'));
 }
 
-function accountDemo (apikey, account) {
+function accountDemo (apikey, account, custID, accID) {
   var custAccount = account.initWithKey(apikey);
-  var custID = '56c66be5a73e492741507383';
-  var accID = '56c66be6a73e492741507db7';
   var newAccount = "{\"nickname\":\"Mr. Stanislaus's Account\"}";
   var sampleAccount = "{\"balance\":50,\"nickname\":\"Lola Account\",\"" +
     "rewards\":2,\"type\":\"Checking\"}";
@@ -165,10 +165,8 @@ function branchDemo (apikey, branch) {
   console.log("[Branch - Get a Branch] : Branch Hour: " + branchAccount.getBranch('55e94a6af8d8770528e60b53').hours[1]);
 }
 
-function customerDemo (apikey, Customer) {
+function customerDemo (apikey, Customer, custID, accID) {
   var customerAccount = Customer.initWithKey(apikey);
-  var custID = '56c66be5a73e492741507383';
-  var accID = '56c66be6a73e492741507db7';
   Customer.getCustomers(function(customers) {
     console.log("[Customer - Get All Customers] : Sample Customer: ");
     var cust = customers[0];

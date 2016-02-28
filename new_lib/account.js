@@ -4,12 +4,12 @@ var request = config.request;
 var Account = (function() {
   function Account() {}
 
-  Account.initWithKey = function(apiKey, callback) {
+  Account.initWithKey = function(apiKey) {
     config.setApiKey(apiKey);
     return this;
   };
 
-  Account.urlWithEntity = function(callback) {
+  Account.urlWithEntity = function() {
     return config.baseUrl+'/accounts';
   };
 
@@ -150,7 +150,7 @@ var Account = (function() {
         }
         callback(res);
       });
-  }
+  };
   return Account;
 })();
 
