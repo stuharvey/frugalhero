@@ -16,6 +16,7 @@ server.use(bodyParser.json());
 
 var jsonfile = require('jsonfile');
 
+// ----------- HABITICA STUFF ------------
 server.get('/config/:uid', getConfig);
 server.put('/config/', storeConfig);
 
@@ -31,7 +32,6 @@ var hUriBase = 'https://habitica.com/api/v2';
 //     data: {
 //     }
 // };
-
 
 function getConfig(req, res) {
   var config = fs.readFileSync(req.params.uid+'.json', 'utf8');
