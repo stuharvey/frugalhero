@@ -1,71 +1,75 @@
-var Customer = {
-  urlWithEntity: function() {
-    return Config.baseUrl+"/customers/";
-  },
-  urlWithAcctEntity: function() {
-    return Config.baseUrl+"/accounts/";
-  },
-  apiKey: function() {
-    return Config.apiKey;
-  },
+var config = require(__dirname + '/capital_one.js');
+var request = config.request;
+
+var Customer = (function() {
+  function Customer() {}
+
+  Customer.urlWithEntity = function() {
+    return config.baseUrl+"/customers";
+  };
+
+  Customer.urlWithAcctEntity = function() {
+    return config.baseUrl+"/accounts";
+  };
+
+  Customer.apiKey = function() {
+    return '?key=' + config.apiKey;
+  };
+
+  Customer.initWithKey = function(key) {
+    config.setApiKey(key);
+    return this;
+  };
+
   /**
     # @Method: getCustomers
     # @Brief: Gets all customers the API key has acccess to.
     # @Returns an array of JSON Objects.
   **/
-  getCustomers: function() {
-    var customers;
-    var request = $.ajax({
-      url: this.urlWithEntity(),
-      data: 'key='+this.apiKey(),
-      async: false,
-      dataType: 'json'
-    });
+  Customer.getCustomers = function(callback) {
+    request.get(this.urlWithEntity() + this.apiKey()).end((function(err, res) {
+      if (err) {
+        console.log(err.message);
+        return;
+      }
+      callback(JSON.parse(res.text));
+    }));
+  };
 
-    request.done(function(results) {
-      customers = results;
-    });
-    return customers;
-  },
   /**
     # @Method: getCustomerById
     # @Brief: Gets the specified customer's information.
     # @Parameters: CustomerId
     # @Returns a object with the customer data
   **/
-  getCustomerById: function(custId) {
-    var customer;
-    var request = $.ajax({
-      url: this.urlWithEntity()+custId,
-      data: 'key='+this.apiKey(),
-      async: false,
-      dataType: 'json'
-    });
+  Customer.getCustomerById = function(custId, callback) {
+    request.get(this.urlWithEntity() + '/' + custId + this.apiKey())
+      .end(function(err, res) {
+        if (err) {
+          console.log(err.message);
+          return;
+        }
+        callback(JSON.parse(res.text));
+      });
+  };
 
-    request.done(function(results) {
-      customer = results;
-    });
-    return customer;
-  },
   /**
     # @Method: Get the customer for the given account.
     # @Parameters: AccountId
     # @Returns a object with the specified customer data.
   **/
-  getCustomerByAcountId: function(accId) {
-    var customer;
-    var request = $.ajax({
-      url: this.urlWithAcctEntity()+accId+'/customer',
-      data: 'key='+this.apiKey(),
-      async: false,
-      dataType: 'json'
-    });
+  Customer.getCustomerByAcountId = function(accId, callback) {
+    request
+      .get(config.baseUrl + '/accounts/' + accId + '/customer' + this.apiKey())
+      .end(function(err, res) {
+        if (err) {
+          console.log(err.message);
+          return;
+        }
+        callback(res.text);
+      });
+  };
 
-    request.done(function(results) {
-      customer = results;
-    });
-    return customer;
-  },
   /**
     # @Method: updateCustomer
     # @Brief: Updates a customer by id with given JSON data.
@@ -82,19 +86,23 @@ var Customer = {
     # }
     # @Returns http response code.
   **/
-  updateCustomer: function(custId, json) {
-    var respCode;
-    var request = $.ajax({
-      url: this.urlWithEntity()+custId+'?key='+this.apiKey(),
-      data: json,
-      contentType: 'application/json',
-      async: false,
-      type: 'PUT'
-    });
+  Customer.updateCustomer = function(custId, updateInfo, callback) {
+    request
+      .put(this.urlWithEntity() + '/' + custId + this.apiKey())
+      .set('Content-Type', 'application/json')
+      .send(updateInfo)
+      .end(function(err, res) {
+        if (err || !res.ok) {
+          console.log("Uh oh got an error in updateCustomer");
+        }
+        else {
+          callback(res);
+        }
+      });
+  };
+  Customer.isBullshit = true;
 
-    request.complete(function(jqXHR, textStatus) {
-      respCode = jqXHR.status;
-    });
-    return respCode;
-  }
-};
+  return Customer;
+})();
+
+module.exports = Customer;

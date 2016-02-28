@@ -1,9 +1,5 @@
 var fs = require('fs');
 var CAPITALONE_KEY = fs.readFileSync('server_keys/capitalone_key', 'utf8');
-var includeInThisContext = function(path) {
-    var code = fs.readFileSync(path);
-    vm.runInThisContext(code, path);
-}.bind(this);
 
 var request = require('superagent');
 
@@ -12,29 +8,28 @@ var Config = {
   apiKey: CAPITALONE_KEY
 };
 
-var libObjects = ['customer.js'];//['account.js', 'atm.js', 'branch.js', 'customer.js',
-  //'deposit.js', 'withdrawal.js', 'bills.js', 'merchant.js', 'purchase.js'];
+var Customer = require(__dirname + '/new_lib/customer.js');
+var Account = require(__dirname + '/new_lib/account.js');
 
-for (var i = 0; i < libObjects.length; i++)
-  includeInThisContext(__dirname + '/new_lib/' + libObjects[i]);
+customerDemo(CAPITALONE_KEY, Customer);
+accountDemo(CAPITALONE_KEY, Account);
 
 
-
-requirejs(['account', 'atm', 'branch', 'customer', 'deposit', 'withdrawal',
-  'bills', 'merchant', 'purchase'], function (account, atm, branch, customer,
-  deposit, withdrawal, bills, merchant, purchase) {
-    var apikey = CAPITALONE_KEY;
-    accountDemo(apikey, account); // !!! Verified !!!
-		atmDemo(apikey, atm); // !!! Verified !!!
-		branchDemo(apikey, branch); // !!! Verified !!!
-		customerDemo(apikey, customer); // !!! Verified !!!
-		depositDemo(apikey, deposit); // !!! Verified - One 404 Error !!!
-		withdrawalDemo(apikey, withdrawal); // !!! Verified !!!
-		billsDemo(apikey, bills); // !!! Verified !!!
-		merchantDemo(apikey, merchant); // !!! Verified !!!
-		purchaseDemo(apikey, purchase); // No Purchases for existing accounts
-
-});
+// requirejs(['account', 'atm', 'branch', 'customer', 'deposit', 'withdrawal',
+//   'bills', 'merchant', 'purchase'], function (account, atm, branch, customer,
+//   deposit, withdrawal, bills, merchant, purchase) {
+//     var apikey = CAPITALONE_KEY;
+//     accountDemo(apikey, account); // !!! Verified !!!
+// 		atmDemo(apikey, atm); // !!! Verified !!!
+// 		branchDemo(apikey, branch); // !!! Verified !!!
+// 		customerDemo(apikey, customer); // !!! Verified !!!
+// 		depositDemo(apikey, deposit); // !!! Verified - One 404 Error !!!
+// 		withdrawalDemo(apikey, withdrawal); // !!! Verified !!!
+// 		billsDemo(apikey, bills); // !!! Verified !!!
+// 		merchantDemo(apikey, merchant); // !!! Verified !!!
+// 		purchaseDemo(apikey, purchase); // No Purchases for existing accounts
+//
+// });
 
 function purchaseDemo (apikey, purchase) {
   console.log('purchase Demo');
@@ -119,20 +114,39 @@ function depositDemo (apikey, deposit) {
 }
 
 function accountDemo (apikey, account) {
-  console.log('Account Demo');
   var custAccount = account.initWithKey(apikey);
-  var custID = '55e94a6af8d8770528e60e64';
-  var accID = '560072e0ce1cef140015e483';
+  var custID = '56c66be5a73e492741507383';
+  var accID = '56c66be6a73e492741507db7';
   var newAccount = "{\"nickname\":\"Mr. Stanislaus's Account\"}";
-  var sampleAccount = "{\"balance\":50,\"nickname\":\"Lola Account\",\"rewards\":2,\"type\":\"Checking\"}";
-  console.log("[Account - Get All Accounts] : Sample Account Nickname: (" + custAccount.getAllAccounts()[0].nickname + ")");
-  console.log("[Account - Get All By Type] : " + custAccount.getAllByType('Checking')[0].type);
-  console.log("[Account - Get Customer (Prior Update)] : " + custAccount.getAllByCustomerId(custID)[0].nickname);
-  console.log("[Account - Updating Stanislaus's Account] - response code: " + custAccount.updateAccount(accID, newAccount));
-  console.log("[Account - Get Customer (Post Update)] : " + custAccount.getAllByCustomerId(custID)[0].nickname);
-  console.log("[Account - Create Sample for Miss. Stanislaus's Account]:  response" + custAccount.createAccount(custID, sampleAccount));
-  console.log("[Account - Get One] : Account Balance $" + parseFloat(custAccount.getAccountById(accID).balance).toFixed(2));
-  //console.log("[Account - Deleting an Account] : Response code: " + custAccount.deleteAccount(accID)); // Uncomment with cautious.
+  var sampleAccount = "{\"balance\":50,\"nickname\":\"Lola Account\",\"" +
+    "rewards\":2,\"type\":\"Checking\"}";
+
+  custAccount.getAllAccounts(function(accounts) {
+    console.log("[Account - Get All Accounts] : ");
+    console.log(accounts);
+  });
+
+  custAccount.getAllByType('Checking', function(accounts) {
+    console.log("[Account - Get All By Type] : ");
+    console.log(accounts);
+  });
+  custAccount.getAllByCustomerId(custID, function(accounts) {
+    console.log("[Account - Get Customer (Prior Update)] : ");
+    console.log(accounts);
+  });
+  custAccount.updateAccount(accID, newAccount, function(res) {
+    console.log("[Account - Updating Stanislaus's Account] - response code:");
+    console.log("\t" + res.statusCode);
+  });
+  custAccount.getAllByCustomerId(custID, function(accounts) {
+    console.log("[Account - Get Customer (Post Update)] : ");
+    console.log(accounts);
+  });
+  custAccount.createAccount(custID, sampleAccount, function(res) {
+    console.log("[Account - Create Sample for Miss. Stanislaus's Account] - " +
+      "response code:");
+    console.log('\t' + res.statusCode);
+  });
 }
 
 function atmDemo (apikey, atm) {
@@ -151,13 +165,35 @@ function branchDemo (apikey, branch) {
   console.log("[Branch - Get a Branch] : Branch Hour: " + branchAccount.getBranch('55e94a6af8d8770528e60b53').hours[1]);
 }
 
-function customerDemo (apikey, customer) {
-  var customerAccount = customer.initWithKey(apikey);
-  var custID = '55e94a6af8d8770528e60e64';
-  var accID = '560072e0ce1cef140015e483';
-  console.log("[Customer - Get All Customers] : Sample Customer: " + customerAccount.getCustomers()[0].first_name);
-  console.log("[Customer - Get Customer By Customer ID] : Sample Customer: " + customerAccount.getCustomerById(custID).first_name);
-  console.log("[Customer - Get Customer By Account ID] : Sample Customer: " + customerAccount.getCustomerByAcountId(accID));
-  var customerInfo = "{\"address\": {\"street_number\": \"8020\",\"street_name\": \"Greenroad Dr\",\"city\": \"McLean\",\"state\": \"VA\",\"zip\": \"22102\"}}";
-  console.log("[Customer - Update Customer] :" + customerAccount.updateCustomer(custID, customerInfo));
+function customerDemo (apikey, Customer) {
+  var customerAccount = Customer.initWithKey(apikey);
+  var custID = '56c66be5a73e492741507383';
+  var accID = '56c66be6a73e492741507db7';
+  Customer.getCustomers(function(customers) {
+    console.log("[Customer - Get All Customers] : Sample Customer: ");
+    var cust = customers[0];
+    console.log("[" + cust._id + "] " + cust.last_name + ", " +
+      cust.first_name);
+  });
+  Customer.getCustomerById(custID, function(customer) {
+    console.log("[Customer - Get Customer By Customer ID] : Sample Customer:");
+    console.log(customer);
+  });
+
+  Customer.getCustomerByAcountId(accID, function(customer) {
+    console.log("[Customer - Get Customer By Account ID] : Sample Customer: " +
+      customer.toString());
+  });
+
+  var customerUpdateInfo = JSON.stringify({ address: {
+    street_number: "8020", street_name: "Greenroad Dr", city: "McLean",
+    state: "VA", zip: "22102" }
+  });
+  Customer.updateCustomer(custID, customerUpdateInfo, function(res) {
+    console.log("updateCustomer passed with code " + res.statusCode);
+    Customer.getCustomerById(custID, function(customer) {
+      console.log("[Customer] Post update: ");
+      console.log(customer);
+    });
+  });
 }
